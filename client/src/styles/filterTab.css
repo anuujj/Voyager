@@ -1,0 +1,24 @@
+.tab-container {
+  display: flex;
+  border: 1px solid #ccc;
+  background-color: #000;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: 1px solid #ccc;
+  max-height: 3.2rem;
+}
+.tab, .tab-container{
+  border-collapse: collapse;
+}
+
+.tab:hover {
+  background-color: #4B4B4B;
+}
+
+.tab.selected {
+  background-color: #4B4B4B;
+}
