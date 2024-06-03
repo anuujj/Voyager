@@ -1,0 +1,26 @@
+const Transaction = require("../models/Transactions");
+
+const fetchPaginatedTransactions = async (req, res) => {
+  const { id, size, filter } = req.query;
+  try {
+    let query = {};
+    if (id) {
+      query._id = { $lt: id };
+    }
+    if (filter) {
+      query.type = filter;
+    }
+
+    const transactions = await Transaction.find(query)
+      .sort({ _id: -1 })
+      .limit(parseInt(size));
+
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch transactions" });
+  }
+};
+
+module.exports = {
+  fetchPaginatedTransactions,
+};
