@@ -1,14 +1,16 @@
 .tab-container {
-  display: flex;
-  border: 1px solid #ccc;
+  display: inline-flex;
+  border: 1px solid rgb(75, 75, 75);;
   background-color: #000;
+  font-size: 1.4rem;
+  margin: 1.2rem 0;
 }
 
 .tab {
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(75, 75, 75);
   max-height: 3.2rem;
 }
 .tab, .tab-container{
@@ -16,7 +18,7 @@
 }
 
 .tab:hover {
-  background-color: #4B4B4B;
+  background-color: #5d5d5d;
 }
 
 .tab.selected {

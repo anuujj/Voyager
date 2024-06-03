@@ -1,21 +1,61 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FilterTabs from "../components/FilterTabs";
 import {
+  TRANSACTION_HEADERS,
   TRANSACTION_HEADING,
   TRANSACTION_SUBHEADING,
   TRANSACTION_TYPES,
 } from "../constants/transactions";
 import RecyclerView from "../components/RecyclerView";
 import TransactionRow from "../components/TransactionRow";
+import fetchTransactions from "../services/fetchTransactions";
+import { Transaction } from "../types/transactions";
 
 const Transactions = () => {
   const [selectedTab, setSelectedTab] = useState(TRANSACTION_TYPES[0].key);
+
+  const [lastId, setLastId] = useState("");
+  const [transactions, setTransactions] = useState<Transaction[]>([]); // [Transaction
+  const intervalRef = useRef<number|null>(null);
+  const rowRenderer = (item: Transaction) => {
+    return <TransactionRow {...item} />;
+  };
+
   const handleTabSelection = (tab: { key: string; label: string }) => {
+    setTransactions([]);
+    setLastId("");
     setSelectedTab(tab.key);
   };
-  const rowRenderer = (item: any) => {
-    return <TransactionRow status={"Invoked"} hash={"123"} type={"Invoke"} operations={"234"} block={12434} age={"24 march 2023"}/>
-  }
+  const handleScrollDown = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    fetchTransactionsAndUpdateList(lastId, selectedTab);
+  };
+
+  const fetchTransactionsAndUpdateList = async (
+    id: string,
+    selectedTab: string
+  ) => {
+    const nextTransactions = await fetchTransactions(id, selectedTab);
+    if (nextTransactions[nextTransactions.length - 1]?._id) {
+      setLastId(nextTransactions[nextTransactions.length - 1]._id);
+    }
+    setTransactions([...transactions, ...nextTransactions]);
+  };
+  useEffect(() => {
+    fetchTransactionsAndUpdateList(lastId, selectedTab);
+    intervalRef.current = setInterval(() => {
+      fetchTransactionsAndUpdateList(lastId, selectedTab);
+    }, 30000); // Fetch new transactions every 30 seconds
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [selectedTab]);
   return (
     <main>
       <h1>{TRANSACTION_HEADING}</h1>
@@ -25,13 +65,22 @@ const Transactions = () => {
         selectedTab={selectedTab}
         onTabSelect={handleTabSelection}
       />
-      <RecyclerView
-        data={[{some: "data"}]}
-        onScrollDown={() => {}}
-        onScrollUp={() => {}}
-        itemHeight={10}
-        rowRenderer={rowRenderer}
-      />
+      {!!transactions.length && (
+        <div className="transaction-table">
+          <div className="transaction-headers">
+            {TRANSACTION_HEADERS.map((header) => (
+              <div key={header}>{header}</div>
+            ))}
+          </div>
+          <div className="transactions-list">
+            <RecyclerView
+              data={transactions}
+              onScrollDown={handleScrollDown}
+              rowRenderer={rowRenderer}
+            />
+          </div>
+        </div>
+      )}
     </main>
   );
 };
