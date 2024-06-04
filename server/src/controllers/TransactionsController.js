@@ -1,4 +1,5 @@
 const Transaction = require("../models/Transactions");
+const TransactionDetails = require("../models/TransactionDetails");
 
 const fetchPaginatedTransactions = async (req, res) => {
   const { id, size, filter } = req.query;
@@ -21,6 +22,20 @@ const fetchPaginatedTransactions = async (req, res) => {
   }
 };
 
+const fetchTransactionDetail = async (req, res) => {
+  const { hash } = req.query;
+  try {
+    const transactionDetail = await TransactionDetails.findOne({ hash });
+    if (!transactionDetail) {
+      return res.status(404).json({ error: "Transaction detail not found" });
+    }
+    res.status(200).json(transactionDetail);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch transaction detail" });
+  }
+};
+
 module.exports = {
   fetchPaginatedTransactions,
+  fetchTransactionDetail,
 };
