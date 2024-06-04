@@ -1,0 +1,14 @@
+.question-mark {
+  height: 1.2rem;
+  width: 1.2rem;
+  filter: invert(100%) sepia(0%) saturate(7465%) hue-rotate(120deg)
+    brightness(115%) contrast(95%);
+}
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 1.6rem;
+}
+.value {
+  border-bottom: 1px solid rgb(56, 56, 56);
+}

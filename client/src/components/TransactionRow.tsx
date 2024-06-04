@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { REVERTED, TRANSACTION_TYPES } from "../constants/transactions";
 import "../styles/transactions.css";
 import {
@@ -32,9 +33,11 @@ const TransactionRow = ({
       </div>
       <div>
         <Tooltip anchorSelect={`#transaction-hash-${hash}`}>{hash}</Tooltip>
-        <span id={`transaction-hash-${hash}`} className="color-blue">
-          {ellipsis(hash)}{" "}
-        </span>
+        <Link to={"/transaction-info?hash=" + hash}>
+          <span id={`transaction-hash-${hash}`} className="color-blue">
+            {ellipsis(hash)}{" "}
+          </span>
+        </Link>
         <button>
           <img
             src="images/copy_to_clipboard.svg"
