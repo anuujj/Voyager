@@ -5,4 +5,5 @@ export type Transaction = {
   type: string;
   block: number;
   age: number;
+  version: string;
 };

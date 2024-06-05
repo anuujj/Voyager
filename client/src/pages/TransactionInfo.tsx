@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import fetchTransactionsDetails from "../services/fetchTransactionDetails";
 import { useLocation } from "react-router-dom";
 import "react-tooltip/dist/react-tooltip.css";
-import { TRANSACTION_TYPES } from "../constants/transactions";
+import { STEPS, TRANSACTION_TYPES } from "../constants/transactions";
 import Overview from "../components/Overview";
 import Events from "../components/Events";
 import "../styles/transactionDetails.css";
 import QuestionMark from "../components/QuestionMark";
+import { convertUnixTimestampToDateTimeString } from "../utils";
+import { Tooltip } from "react-tooltip";
+import Stepper from "../components/Stepper";
 
 const TransactionInfo = () => {
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [error, setError] = useState(false);
   const [transaction, setTransaction] = useState<any>({});
   const [transactionType, setTransactionType] = useState<any>();
   const [selectedSection, setSelectedSection] = useState<"Overview" | "Events">(
@@ -22,21 +27,29 @@ const TransactionInfo = () => {
     try {
       const data = await fetchTransactionsDetails(hash);
       setTransaction(data);
+      setIsLoaded(true);
       setTransactionType(TRANSACTION_TYPES.find((t) => t.key === data.type));
       console.log(data);
     } catch (error) {
+      setIsLoaded(true);
+      setError(true);
       console.error("Error fetching transaction details:", error);
     }
   };
   useEffect(() => {
     fetchTransactionsDetailsAndUpdateState(hash);
   }, []);
-  return (
-    <main>
+  return !isLoaded ? (
+    <div className="loading">{"Loading..."}</div>
+  ) : error ? (
+    <div className="error">{"Error fetching transaction details"}</div>
+  ) : (
+    <main className="transaction-info">
       <h1>{"Transaction"}</h1>
-      <div>
+      <div className="df fd-c">
+        <div className="transaction-keys">{"Hash"}</div>
         <div>
-          <span>{"Hash"}</span>
+          <span>{transaction?.hash}</span>
           <button>
             <img
               src="images/copy_to_clipboard.svg"
@@ -46,12 +59,11 @@ const TransactionInfo = () => {
             />
           </button>
         </div>
-        <div>{transaction?.hash}</div>
       </div>
-      <div>
-        <div>
-          <div>
-            <span>{"Type"}</span>
+      <div className="df">
+        <div className="transaction-info-type">
+          <div className="df ai-c">
+            <span className="transaction-keys">{"Type"}</span>
             <QuestionMark
               tooltipInfo="Transaction Type"
               id="transaction-type-ques"
@@ -61,28 +73,42 @@ const TransactionInfo = () => {
             {transaction?.type}
           </div>
         </div>
+        <Tooltip anchorSelect={"#transaction-info-time"}>
+          {convertUnixTimestampToDateTimeString(transaction?.timeStamp)}
+        </Tooltip>
         <div>
-          <div>{"TimeStamp"}</div>
-          <div>{transaction?.timeStamp}</div>
+          <div className="transaction-keys">{"TimeStamp"}</div>
+          <div id={"transaction-info-time"}>
+            {convertUnixTimestampToDateTimeString(transaction?.timeStamp)}
+          </div>
         </div>
       </div>
       <div>
-        <div>{"Status"}</div>
-        <div>{transaction?.status}</div>
+        <div className="transaction-keys">{"Status"}</div>
+        <div>
+          <Stepper steps={STEPS} />
+        </div>
       </div>
-      <div>
-        <span
-          className={selectedSection === "Overview" ? "selectedTab" : ""}
+      <div className="df ai-c">
+        <div
+          className={`${
+            selectedSection === "Overview" ? "selected-tab" : ""
+          } transaction-keys transaction-info-tab df ai-c`}
           onClick={() => setSelectedSection("Overview")}
         >
           {"Overview"}
-        </span>
-        <span
-          className={selectedSection === "Events" ? "selectedTab" : ""}
+        </div>
+        <div
+          className={`${
+            selectedSection === "Events" ? "selected-tab" : ""
+          } transaction-keys transaction-info-tab df ai-c`}
           onClick={() => setSelectedSection("Events")}
         >
-          {"Events"}
-        </span>
+          {"Events "}
+          <span className="transaction-event-count">
+            {transaction?.events?.length}
+          </span>
+        </div>
       </div>
       {selectedSection === "Overview" ? (
         <Overview transaction={transaction} />

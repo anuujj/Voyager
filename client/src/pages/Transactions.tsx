@@ -65,7 +65,7 @@ const Transactions = () => {
         selectedTab={selectedTab}
         onTabSelect={handleTabSelection}
       />
-      {!!transactions.length && (
+      {!!transactions.length ? (
         <div className="transaction-table">
           <div className="transaction-headers">
             {TRANSACTION_HEADERS.map((header) => (
@@ -80,7 +80,7 @@ const Transactions = () => {
             />
           </div>
         </div>
-      )}
+      ): <div>{"No transactions for this filter"}</div>}
     </main>
   );
 };

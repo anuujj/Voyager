@@ -58,3 +58,10 @@ export const TRANSACTION_TYPES = [
     },
   },
 ];
+
+export const CALL_DATA_TYPE = ["Hex", "Dec", "Text"];
+export const STEPS = [
+  { label: "Received", status: "completed" },
+  { label: "Accepted on L2", status: "completed" },
+  { label: "Accepted on L1", status: "active" },
+];

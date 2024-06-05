@@ -4,7 +4,7 @@ import "react-tooltip/dist/react-tooltip.css";
 const Events = ({ transaction }) => {
   return (
     <section>
-      <table>
+      <table className="transaction-events">
         <thead>
           <tr>
             <th>{"ID"}</th>
@@ -20,9 +20,9 @@ const Events = ({ transaction }) => {
                   anchorSelect={`#event-${index}`}
                 >{`${transaction?.block}_${transaction.position}_${index}`}</Tooltip>
                 <td
-                  id={`#event-${index}`}
+                  id={`#event-${index}`} className="color-blue"
                 >{`${transaction?.block}_${transaction.position}_${index}`}</td>
-                <td>
+                <td className="color-blue">
                   {transaction?.block}
                   <button>
                     <img

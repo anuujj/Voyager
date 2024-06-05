@@ -15,14 +15,19 @@ const TransactionRow = ({
   type,
   block,
   age,
+  version,
 }: {
   status: string;
   hash: string;
   type: string;
   block: number;
   age: number;
+  version: string;
 }) => {
   const transactionType = TRANSACTION_TYPES.find((t) => t.key === type);
+  const hasDetails = () => {
+    return type === "INVOKE" && version === "0x1";
+  };
   return (
     <div className="transaction-row">
       <div>
@@ -33,11 +38,17 @@ const TransactionRow = ({
       </div>
       <div>
         <Tooltip anchorSelect={`#transaction-hash-${hash}`}>{hash}</Tooltip>
-        <Link to={"/transaction-info?hash=" + hash}>
+        {hasDetails() ? (
+          <Link to={"/transaction-info?hash=" + hash}>
+            <span id={`transaction-hash-${hash}`} className="color-blue">
+              {ellipsis(hash)}{" "}
+            </span>
+          </Link>
+        ) : (
           <span id={`transaction-hash-${hash}`} className="color-blue">
             {ellipsis(hash)}{" "}
           </span>
-        </Link>
+        )}
         <button>
           <img
             src="images/copy_to_clipboard.svg"

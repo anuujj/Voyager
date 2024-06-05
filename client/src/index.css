@@ -40,3 +40,19 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+.df{
+  display: flex;
+}
+.fd-c{
+  flex-direction: column;
+}
+.ai-c{
+  align-items: center;
+}
+.ai-fs{
+  align-items: flex-start;
+
+}
+.jc-sb{
+  justify-content: space-between;
+}
