@@ -7,6 +7,7 @@ const TransactionDetailsSchema = new mongoose.Schema({
   block: { type: Number, required: true },
   timeStamp: { type: Number, required: true },
   actualFee: { type: Object, required: true },
+  ethPrice: { type: Number, required: true },
   maxFee: { type: String, required: true },
   l1GasPrice: { type: String, required: true },
   sender: { type: String, required: true },
