@@ -13,7 +13,7 @@ import { Transaction } from "../types/transactions";
 
 const Transactions = () => {
   const [selectedTab, setSelectedTab] = useState(TRANSACTION_TYPES[0].key);
-
+  const [loading, setLoading] = useState(true);
   const [lastId, setLastId] = useState("");
   const [transactions, setTransactions] = useState<Transaction[]>([]); // [Transaction
   const intervalRef = useRef<any>(null);
@@ -38,7 +38,9 @@ const Transactions = () => {
     id: string,
     selectedTab: string
   ) => {
+    setLoading(true);
     const nextTransactions = await fetchTransactions(id, selectedTab);
+    setLoading(false);
     if (nextTransactions[nextTransactions.length - 1]?._id) {
       setLastId(nextTransactions[nextTransactions.length - 1]._id);
     }
@@ -65,7 +67,9 @@ const Transactions = () => {
         selectedTab={selectedTab}
         onTabSelect={handleTabSelection}
       />
-      {!!transactions.length ? (
+      {loading ? (
+        <div>loading....</div>
+      ) : !!transactions.length ? (
         <div className="transaction-table">
           <div className="transaction-headers">
             {TRANSACTION_HEADERS.map((header) => (
@@ -80,7 +84,9 @@ const Transactions = () => {
             />
           </div>
         </div>
-      ): <div>{"No transactions for this filter"}</div>}
+      ) : (
+        <div>{"No transactions for this filter"}</div>
+      )}
     </main>
   );
 };
