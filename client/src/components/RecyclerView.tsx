@@ -14,12 +14,12 @@ const RecyclerView = <T,>({
   const [visibleData, setVisibleData] = useState(data);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e) => {
+  const handleScroll = (e: any) => {
     const scrollTop = e.target.scrollTop;
     const clientHeight = e.target.clientHeight;
     const scrollHeight = e.target.scrollHeight;
 
-    const isBottom = Math.ceil(scrollTop + clientHeight)+30 >= scrollHeight;
+    const isBottom = Math.ceil(scrollTop + clientHeight) + 30 >= scrollHeight;
 
     if (isBottom) {
       onScrollDown();

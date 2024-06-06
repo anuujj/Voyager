@@ -27,6 +27,7 @@ export function convertUnixTimestampToDateTimeString(timestamp: number) {
     minute: "2-digit",
     second: "2-digit",
   };
+  //@ts-ignore
   return date.toLocaleString("en-US", options);
 }
 export function convertUnixTimestampToTimeAgo(timestamp: number): string {
@@ -104,6 +105,7 @@ export function hexWeiToEth(hexWei: string) {
 }
 export function hexWeiToUsd(hexWei: string, ethPriceUsd: number): number {
   const eth = hexWeiToEth(hexWei);
+  //@ts-ignore
   const usd = eth * ethPriceUsd;
   return usd;
 }

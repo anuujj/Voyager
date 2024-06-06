@@ -1,7 +1,8 @@
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { Transaction } from "../types/transactions";
 
-const Events = ({ transaction }) => {
+const Events = ({ transaction }: { transaction: Transaction }) => {
   return (
     <section>
       <table className="transaction-events">
@@ -13,14 +14,15 @@ const Events = ({ transaction }) => {
           </tr>
         </thead>
         <tbody>
-          {transaction?.events?.map((_, index: number) => {
+          {transaction?.events?.map((_: any, index: number) => {
             return (
               <tr>
                 <Tooltip
                   anchorSelect={`#event-${index}`}
                 >{`${transaction?.block}_${transaction.position}_${index}`}</Tooltip>
                 <td
-                  id={`#event-${index}`} className="color-blue"
+                  id={`#event-${index}`}
+                  className="color-blue"
                 >{`${transaction?.block}_${transaction.position}_${index}`}</td>
                 <td className="color-blue">
                   {transaction?.block}

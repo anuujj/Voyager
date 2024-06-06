@@ -16,7 +16,7 @@ const Transactions = () => {
 
   const [lastId, setLastId] = useState("");
   const [transactions, setTransactions] = useState<Transaction[]>([]); // [Transaction
-  const intervalRef = useRef<number|null>(null);
+  const intervalRef = useRef<any>(null);
   const rowRenderer = (item: Transaction) => {
     return <TransactionRow {...item} />;
   };

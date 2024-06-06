@@ -1,3 +1,4 @@
+import { Transaction } from "../types/transactions";
 import {
   convertUnixTimestampToDateTimeString,
   convertUnixTimestampToTimeAgo,
@@ -8,7 +9,7 @@ import {
 import CallData from "./CallData";
 import QuestionMark from "./QuestionMark";
 
-const Overview = ({ transaction }) => {
+const Overview = ({ transaction }:{transaction: Transaction}) => {
   return (
     <section className="transaction-overview">
       <article>

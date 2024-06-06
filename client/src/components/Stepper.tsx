@@ -3,7 +3,7 @@ import "../styles/stepper.css";
 
 interface Step {
   label: string;
-  status: "completed" | "active" | "inactive";
+  status: string;
 }
 
 interface StepperProps {
