@@ -7,7 +7,7 @@ async function fetchTransactions(
 ): Promise<Transaction[]> {
   try {
     const response = await fetch(
-      "https://voyager-be.vercel.app/api/transactions?id=" +
+      "https://voyager-23vq.onrender.com/api/transactions?id=" +
         id +
         "&size=" +
         size +

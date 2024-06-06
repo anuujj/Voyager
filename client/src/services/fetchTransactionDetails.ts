@@ -3,7 +3,7 @@ async function fetchTransactionsDetails(
 ): Promise<any> {
   try {
     const response = await fetch(
-      "https://voyager-be.vercel.app/api/transactionDetails?hash=" + hash
+      "https://voyager-23vq.onrender.com/api/transactionDetails?hash=" + hash
     );
     if (!response.ok) {
       throw new Error("Error fetching transactions");
