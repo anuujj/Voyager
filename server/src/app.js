@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: "https://voyager-anuujj.vercel.app/",
+  origin: "https://voyager-anuujj.vercel.app",
   optionsSuccessStatus: 200,
 };
 
