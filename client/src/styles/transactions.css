@@ -9,7 +9,8 @@
   display: grid;
   grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr;
   padding: 4px;
-  color:rgb(170, 170, 170);
+  min-width: 768px;
+  color: rgb(170, 170, 170);
   align-items: center;
   font-weight: bold;
   border-bottom: 1px solid rgb(75, 75, 75);
@@ -23,6 +24,7 @@
   padding: 4px;
   height: 4rem;
   display: grid;
+  min-width: 768px;
   grid-template-columns: 0.25fr 1fr 1fr 1fr 1fr;
   border-bottom: 1px solid rgb(75, 75, 75);
   align-items: center;
@@ -43,12 +45,27 @@
   filter: invert(100%) sepia(0%) saturate(7465%) hue-rotate(120deg)
     brightness(115%) contrast(95%);
 }
-.color-blue{
-    color: rgb(139, 163, 223);
+.color-blue {
+  color: rgb(139, 163, 223);
 }
-.color-orange{
+.color-orange {
   color: rgb(245, 171, 53);
 }
-.color-green{
+.color-green {
   color: #82f4bb;
+}
+
+@media (max-width: 768px) {
+  .tab-outer-container {
+    width: 400px;
+    overflow: auto;
+  }
+  .transaction-table {
+    width: 400px;
+    overflow: auto;
+  }
+  .transaction-headers,
+  .transaction-row {
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+  }
 }

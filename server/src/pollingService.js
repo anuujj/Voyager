@@ -4,6 +4,9 @@ const TransactionDetailsModel = require("./models/TransactionDetails");
 
 // Function to fetch data from external API and save to MongoDB
 let prev_block;
+const httpsAgentBlockVerification = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 const fetchBlockDetails = async (latest_block) => {
   const res = await axios.post(
@@ -25,6 +28,7 @@ const fetchBlockDetails = async (latest_block) => {
 };
 const fetchDataAndSaveTransactions = async () => {
   try {
+    axios.defaults.httpsAgent = httpsAgentBlockVerification;
     const response = await axios.post(
       "https://starknet-mainnet.blastapi.io/ff9368e6-04c8-4b23-acd1-8750d2d31832/rpc/v0_7",
       {

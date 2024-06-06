@@ -62,11 +62,13 @@ const Transactions = () => {
     <main>
       <h1>{TRANSACTION_HEADING}</h1>
       <h3>{TRANSACTION_SUBHEADING}</h3>
-      <FilterTabs
-        tabs={TRANSACTION_TYPES}
-        selectedTab={selectedTab}
-        onTabSelect={handleTabSelection}
-      />
+      <div className="tab-outer-container">
+        <FilterTabs
+          tabs={TRANSACTION_TYPES}
+          selectedTab={selectedTab}
+          onTabSelect={handleTabSelection}
+        />
+      </div>
       {loading ? (
         <div>loading....</div>
       ) : !!transactions.length ? (
