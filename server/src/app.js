@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 const allowedOrigins = [
-  "https://voyager-anuujj.vercel.app/",
+  "https://voyager-anuujj.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
   // add more origins as needed
