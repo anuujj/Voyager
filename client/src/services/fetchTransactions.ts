@@ -7,7 +7,8 @@ async function fetchTransactions(
 ): Promise<Transaction[]> {
   try {
     const response = await fetch(
-      "http://localhost:3000/api/transactions?id=" +
+      import.meta.env.BASE_URL +
+        "/api/transactions?id=" +
         id +
         "&size=" +
         size +

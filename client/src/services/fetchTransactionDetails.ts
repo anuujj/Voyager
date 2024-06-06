@@ -3,7 +3,7 @@ async function fetchTransactionsDetails(
 ): Promise<any> {
   try {
     const response = await fetch(
-      "http://localhost:3000/api/transactionDetails?hash=" + hash
+      import.meta.env.BASE_URL+ "/api/transactionDetails?hash=" + hash
     );
     if (!response.ok) {
       throw new Error("Error fetching transactions");
