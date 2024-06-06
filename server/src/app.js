@@ -3,8 +3,21 @@ const cors = require("cors");
 
 const app = express();
 
+const allowedOrigins = [
+  "https://voyager-anuujj.vercel.app/",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  // add more origins as needed
+];
+
 const corsOptions = {
-  origin: "https://voyager-anuujj.vercel.app",
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   optionsSuccessStatus: 200,
 };
 
