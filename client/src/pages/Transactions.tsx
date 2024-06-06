@@ -38,7 +38,6 @@ const Transactions = () => {
     id: string,
     selectedTab: string
   ) => {
-    setLoading(true);
     const nextTransactions = await fetchTransactions(id, selectedTab);
     setLoading(false);
     if (nextTransactions[nextTransactions.length - 1]?._id) {
@@ -47,6 +46,7 @@ const Transactions = () => {
     setTransactions([...transactions, ...nextTransactions]);
   };
   useEffect(() => {
+    setLoading(true);
     fetchTransactionsAndUpdateList(lastId, selectedTab);
     intervalRef.current = setInterval(() => {
       fetchTransactionsAndUpdateList(lastId, selectedTab);
