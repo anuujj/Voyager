@@ -4,9 +4,6 @@ const TransactionDetailsModel = require("./models/TransactionDetails");
 
 // Function to fetch data from external API and save to MongoDB
 let prev_block;
-const httpsAgentBlockVerification = new https.Agent({
-  rejectUnauthorized: false,
-});
 
 const fetchBlockDetails = async (latest_block) => {
   const res = await axios.post(
@@ -28,7 +25,6 @@ const fetchBlockDetails = async (latest_block) => {
 };
 const fetchDataAndSaveTransactions = async () => {
   try {
-    axios.defaults.httpsAgent = httpsAgentBlockVerification;
     const response = await axios.post(
       "https://starknet-mainnet.blastapi.io/ff9368e6-04c8-4b23-acd1-8750d2d31832/rpc/v0_7",
       {
@@ -36,6 +32,12 @@ const fetchDataAndSaveTransactions = async () => {
         method: "starknet_blockNumber",
         params: [],
         id: 1,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Connection: "keep-alive",
+        },
       }
     );
     const data = response.data;
@@ -49,6 +51,7 @@ const fetchDataAndSaveTransactions = async () => {
         await fetchAllTransactionDetailsAndSave(result);
       }
     } else if (latest_block !== prev_block) {
+      console.log("new block", latest_block);
       prev_block = latest_block;
       const result = await fetchBlockDetails(latest_block);
       await fetchAllTransactionDetailsAndSave(result);
@@ -62,7 +65,13 @@ const fetchDataAndSaveTransactions = async () => {
 
 const fetchAllTransactionDetailsAndSave = async (block) => {
   const response = await axios.get(
-    "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+    "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Connection: "keep-alive",
+      },
+    }
   );
   const ethPrice = response.data.ethereum.usd;
 
@@ -84,6 +93,12 @@ const fetchTransactionDetailsAndSave = async (txn_index, block, ethPrice) => {
           method: "starknet_getTransactionReceipt",
           params: [transaction.transaction_hash],
           id: 1,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Connection: "keep-alive",
+          },
         }
       );
       const data = res.data;

@@ -3,8 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
   font-size: 10px;
-
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -40,19 +39,18 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-.df{
+.df {
   display: flex;
 }
-.fd-c{
+.fd-c {
   flex-direction: column;
 }
-.ai-c{
+.ai-c {
   align-items: center;
 }
-.ai-fs{
+.ai-fs {
   align-items: flex-start;
-
 }
-.jc-sb{
+.jc-sb {
   justify-content: space-between;
 }
