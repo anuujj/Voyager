@@ -1,12 +1,13 @@
-const express = require('express');
+require('dotenv').config();
+const app = require('../src/app');
+const connectDB = require('./config/db');
+const { startPolling } = require('../src/pollingService');
+const { PORT } = process.env;
 
-const app = express();
+connectDB();
 
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
-// Routes
-app.use('/api', require('../src/routes'));
-
-module.exports = app;
+startPolling();
