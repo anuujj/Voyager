@@ -1,4 +1,3 @@
-const Transaction = require("../models/Transactions");
 const TransactionDetails = require("../models/TransactionDetails");
 
 const fetchPaginatedTransactions = async (req, res) => {
@@ -12,7 +11,7 @@ const fetchPaginatedTransactions = async (req, res) => {
       query.type = filter;
     }
 
-    const transactions = await Transaction.find(query)
+    const transactions = await TransactionDetails.find(query)
       .sort({ _id: -1 })
       .limit(parseInt(size));
 

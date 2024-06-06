@@ -1,6 +1,5 @@
 const https = require("https");
 const axios = require("axios");
-const TransactionsModel = require("./models/Transactions");
 const TransactionDetailsModel = require("./models/TransactionDetails");
 
 // Function to fetch data from external API and save to MongoDB
@@ -9,7 +8,7 @@ const httpsAgentBlockVerification = new https.Agent({
   rejectUnauthorized: false,
 });
 
-const fetchBlockDetailsAndSave = async (latest_block) => {
+const fetchBlockDetails = async (latest_block) => {
   const res = await axios.post(
     "https://starknet-mainnet.blastapi.io/ff9368e6-04c8-4b23-acd1-8750d2d31832/rpc/v0_7",
     {
@@ -25,18 +24,6 @@ const fetchBlockDetailsAndSave = async (latest_block) => {
   );
   const data = res.data;
   const result = data.result;
-
-  const transactions = result.transactions.map((tx) => {
-    return {
-      status: result.status,
-      hash: tx.transaction_hash,
-      type: tx.type,
-      block: result.block_number,
-      age: result.timestamp,
-      version: tx.version,
-    };
-  });
-  await TransactionsModel.insertMany(transactions);
   return result;
 };
 const fetchDataAndSaveTransactions = async () => {
@@ -56,18 +43,18 @@ const fetchDataAndSaveTransactions = async () => {
 
     if (!prev_block && latest_block) {
       prev_block = latest_block;
-      for (let i = 0; i >= 0; i--) { // limited the loop due to rate-limiting issues
-        const result = await fetchBlockDetailsAndSave(latest_block - i);
+      for (let i = 0; i >= 0; i--) {
+        // limited the loop due to rate-limiting issues
+        const result = await fetchBlockDetails(latest_block - i);
         await fetchAllTransactionDetailsAndSave(result);
       }
     } else if (latest_block !== prev_block) {
       prev_block = latest_block;
-      const result = await fetchBlockDetailsAndSave(latest_block);
+      const result = await fetchBlockDetails(latest_block);
       await fetchAllTransactionDetailsAndSave(result);
-    }else{
-      console.log('No new block', latest_block, prev_block);
+    } else {
+      console.log("No new block", latest_block, prev_block);
     }
-    console.log("Data fetched and saved to MongoDB");
   } catch (err) {
     console.error("Error fetching data from API or saving to MongoDB", err);
   }
@@ -78,10 +65,12 @@ const fetchAllTransactionDetailsAndSave = async (block) => {
     "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
   );
   const ethPrice = response.data.ethereum.usd;
-  const promises = block.transactions.map((_, index) =>
-    fetchTransactionDetailsAndSave(index, block, ethPrice)
-  );
-  await Promise.all(promises);
+
+  for (let index = 0; index < block.transactions.length; index++) {
+    //delay to prevent rate-limiting issues
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    await fetchTransactionDetailsAndSave(index, block, ethPrice);
+  }
 };
 
 const fetchTransactionDetailsAndSave = async (txn_index, block, ethPrice) => {
