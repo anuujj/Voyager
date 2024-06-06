@@ -14,14 +14,14 @@ const TransactionRow = ({
   hash,
   type,
   block,
-  age,
+  timeStamp,
   version,
 }: {
   status: string;
   hash: string;
   type: string;
   block: number;
-  age: number;
+  timeStamp: number;
   version: string;
 }) => {
   const transactionType = TRANSACTION_TYPES.find((t) => t.key === type);
@@ -74,10 +74,10 @@ const TransactionRow = ({
       </div>
       <div>
         <Tooltip anchorSelect={`#transaction-age-${hash}`}>
-          {convertUnixTimestampToDateString(age)}
+          {convertUnixTimestampToDateString(timeStamp)}
         </Tooltip>
         <span id={`transaction-age-${hash}`}>
-          {convertUnixTimestampToTimeAgo(age)}
+          {convertUnixTimestampToTimeAgo(timeStamp)}
         </span>
       </div>
     </div>
