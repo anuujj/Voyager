@@ -7,8 +7,7 @@ async function fetchTransactions(
 ): Promise<Transaction[]> {
   try {
     const response = await fetch(
-      import.meta.env.BASE_URL +
-        "/api/transactions?id=" +
+      "https://voyager-be.vercel.app/api/transactions?id=" +
         id +
         "&size=" +
         size +
